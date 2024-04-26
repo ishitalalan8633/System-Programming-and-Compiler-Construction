@@ -1,0 +1,20 @@
+import ast
+
+
+def compile_time_evaluation(expression):
+    try:
+        # Parse the expression into an abstract syntax tree (AST)
+        parsed_expression = ast.parse(expression, mode='eval')
+
+        # Evaluate the AST
+        evaluated_value = eval(compile(parsed_expression, filename='<ast>', mode='eval'))
+
+        print("Compile-time evaluation result:", evaluated_value)
+    except Exception as e:
+        print("Error during compile-time evaluation:", e)
+
+
+# Example usage
+if __name__ == "__main__":
+    expression = input("Enter the arithmetic expression to evaluate: ")
+    compile_time_evaluation(expression)
