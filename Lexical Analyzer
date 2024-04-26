@@ -1,0 +1,45 @@
+import re
+
+operators = {'=': 'Assignment op', '+': 'Addition op', '-': 'Subtraction op', '/': 'Division op',
+             '*': 'Multiplication op', '<': 'Lessthan op', '>': 'Greaterthan op'}
+operators_key = operators.keys()
+
+data_type = {'int': 'integer type', 'float': 'Floating point', 'char': 'Character type', 'long': 'long int'}
+data_type_key = data_type.keys()
+
+punctuation_symbol = {':': 'colon', ';': 'semi-colon', '.': 'dot', ',': 'comma'}
+punctuation_symbol_key = punctuation_symbol.keys()
+
+identifier = {'a': 'id', 'b': 'id', 'c': 'id', 'd': 'id'}
+identifier_key = identifier.keys()
+
+lines = []
+print("Enter your code. Type 'exit' on a new line to end input.")
+while True:
+    line = input("> ")
+    if line.lower() == 'exit':
+        break
+    lines.append(line)
+
+count = 0
+for line in lines:
+    count += 1
+    print("line#", count, "\n", line)
+
+    tokens = re.findall(r'\w+|[^\w\s]', line)  # Tokenizing using regex to include punctuations
+
+    if tokens:
+        print("Tokens are ", tokens)
+        print("Line No ", count, "identifiers \n")
+        for token in tokens:
+            if token in operators_key:
+                print(token, "operator is ", operators[token])
+            elif token in data_type_key:
+                print(token, "datatype is", data_type[token])
+            elif token in punctuation_symbol_key:
+                print(token, "Separators is", punctuation_symbol[token])
+            elif token in identifier_key:
+                print(token, "Identifier is", identifier[token])
+    else:
+        print("No Tokens")
+    print(" _")
