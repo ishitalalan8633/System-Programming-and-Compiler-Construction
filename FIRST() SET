@@ -1,0 +1,42 @@
+def compute_first(grammar):
+    first = {}
+
+    # Function to recursively compute FIRST set for non-terminals
+    def compute_first_recursive(symbol):
+        if symbol in first:
+            return first[symbol]
+
+        first_set = set()
+
+        for production in grammar[symbol]:
+            first_term = production[0]
+            if first_term.islower() or first_term.isnumeric():
+                first_set.add(first_term)
+            elif first_term in grammar:
+                first_set |= compute_first_recursive(first_term)
+
+        first[symbol] = first_set
+        return first_set
+
+    # Iterate over each non-terminal to compute its FIRST set
+    for symbol in grammar:
+        compute_first_recursive(symbol)
+
+    return first
+
+
+def main():
+    # Example grammar
+    grammar = {
+        'A': [['a', 'b', 'd'], ['b', 'e', 'f'], ['k', 'h', 'l'], ['B']],
+        'B': [['c']]
+    }
+
+    first_set = compute_first(grammar)
+    print("FIRST set:")
+    for symbol, first_symbols in first_set.items():
+        print(f"FIRST({symbol}): {first_symbols}")
+
+
+if __name__ == "__main__":
+    main()
