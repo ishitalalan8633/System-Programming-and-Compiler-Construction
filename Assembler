@@ -1,0 +1,38 @@
+def pass1_assembler(source_code):
+    symbol_table = {}
+    location_counter = 0
+
+    for line in source_code:
+        if line.strip():  # Ignore empty lines
+            parts = line.split()
+
+            # Check if the line contains a label (symbol)
+            if len(parts) >= 2 and parts[0][-1] == ':':
+                label = parts[0][:-1]  # Extract label without the ':'
+                symbol_table[label] = location_counter
+                parts = parts[1:]  # Remove label from parts
+
+            # Check if the line contains an operation code
+            if parts:
+                operation_code = parts[0]
+                location_counter += 1  # Increment location counter for each operation
+
+    return symbol_table
+
+# Sample source code for demonstration
+source_code = [
+    "START: LDA X",
+    "LOOP: STA Y",
+    "       JUMP LOOP",
+    "       HLT",
+    "X:     DATA 5",
+    "Y:     RES 1",
+]
+
+# Pass 1 of the two-pass assembler
+symbol_table = pass1_assembler(source_code)
+
+# Display the symbol table generated in pass 1
+print("Symbol Table:")
+for symbol, address in symbol_table.items():
+    print(f"{symbol}: {address}")
