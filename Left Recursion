@@ -1,0 +1,37 @@
+eliminated_grammar = []
+def remove_left_recursion(iGrammar):
+    for rule in iGrammar:
+        rule_splitted_by_arrow = rule.split("->")
+        rule_splitted_by_slash = rule_splitted_by_arrow[1].split("|")
+        rule_parts_with_left_recursion = []
+        rule_parts_without_left_recursion = []
+        k, l = 0, 0
+        for c in rule_splitted_by_slash:
+            if rule_splitted_by_arrow[0] == c[0]:
+                rule_parts_with_left_recursion.append(k)
+            else:
+                rule_parts_without_left_recursion.append(l)
+            k += 1
+            l += 1
+        if len(rule_parts_with_left_recursion) == 0:
+            eliminated_grammar.append(rule)
+            continue
+        oldRule = rule_splitted_by_arrow[0] + "->"
+        for i in rule_parts_without_left_recursion:
+            oldRule += rule_splitted_by_slash[i] +  rule_splitted_by_arrow[0] +  "'|"
+        eliminated_grammar.append(oldRule)
+        newRule = rule_splitted_by_arrow[0] + "'->"
+        for i in rule_parts_with_left_recursion:
+            newRule += (
+            rule_splitted_by_slash[i].lstrip(rule_splitted_by_arrow[0])
+            + rule_splitted_by_arrow[0]
+            + "'|"
+            )
+        newRule += "null" 
+        eliminated_grammar.append(newRule)
+n = int(input("Enter number of rules: "))
+input_grammar = [input("Enter rule " + str(i + 1) + ": ") for i in range(n)]
+remove_left_recursion(input_grammar)
+print("\nGrammar without left recursion:")
+for grammar in eliminated_grammar:
+    print(grammar)
